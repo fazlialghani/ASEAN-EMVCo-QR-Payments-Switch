@@ -4,11 +4,11 @@ HEADERS  = $(wildcard include/*.h)
 
 .PHONY: test clean
 
-app: src/main.cpp src/money.cpp $(HEADERS)
-	$(CXX) $(CXXFLAGS) $(filter %.cpp,$^) -o $@
+app: src/main.cc src/money.cc $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(filter %.cc,$^) -o $@
 
-run_tests: tests/test_money.cpp src/money.cpp $(HEADERS)
-	$(CXX) $(CXXFLAGS) $(filter %.cpp,$^) -o $@
+run_tests: tests/test_money.cc src/money.cc $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(filter %.cc,$^) -o $@
 
 test: run_tests
 	./run_tests
