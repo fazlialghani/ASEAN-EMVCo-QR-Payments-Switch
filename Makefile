@@ -10,8 +10,12 @@ app: src/main.cc src/money.cc src/currency.cc $(HEADERS)
 run_tests: tests/test_money.cc src/money.cc src/currency.cc $(HEADERS)
 	$(CXX) $(CXXFLAGS) $(filter %.cc,$^) -o $@
 
-test: run_tests
+run_tlv_tests: tests/test_tlv.cc src/tlv.cc $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(filter %.cc,$^) -o $@
+
+test: run_tests run_tlv_tests
 	./run_tests
+	./run_tlv_tests
 
 clean:
-	rm -f app run_tests
+	rm -f app run_tests run_tlv_tests
