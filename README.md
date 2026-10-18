@@ -1,2 +1,2 @@
 # ASEAN-EMVCo-QR-Payments-Switch
-A C++ payment switch that settles cross-border QR payments across ASEAN, from QRIS to PromptPay to PayNow. Every payment is applied exactly once, balances always reconcile, and the ledger survives crashes intact.
+A C++20 payment switch for cross-border QR payments across ASEAN (QRIS, PromptPay, PayNow), built on the EMVCo QR specification. Roadmap: exactly-once payment application, balance reconciliation, and a crash-safe ledger.
