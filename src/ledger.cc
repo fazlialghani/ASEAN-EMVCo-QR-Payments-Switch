@@ -19,6 +19,9 @@ void Ledger::post(const Transaction &tr)
 {
     //Moves money from one account to another after checking
     //every rule first; if any check fails, no balance changes.
+    if (tr.amount().minorUnits() <= 0)
+        throw std::invalid_argument("post: amount. must be positive");
+
     auto from = accounts_.find(tr.from());
     auto to = accounts_.find(tr.to());
 
@@ -29,10 +32,26 @@ void Ledger::post(const Transaction &tr)
         throw std::invalid_argument("post: from and to are the same");
     
     //CHECK
+    Money newFrom = from->second.balance - tr.amount();
+    Money newTo = to->second.balance + tr.amount();
+
+    if (!from->second.canGoNegative && newFrom.minorUnits() < 0)
+        throw std::invalid_argument("post: '" + tr.from() + "'would go negative");
+    
+    //COMMIT
+    history_.push_back(tr);
+    from->second.balance = newFrom;
+    to->second.balance = newTo;
 }
 
 Money Ledger::balance(const std::string &id) const
 {
+    //Returns an account’s current balance without modifying the ledger, and
+    //throws if the account does not exist.
+    auto acc = accounts_.find(id);
 
+    if (acc == accounts_.end())
+        throw std::invalid_argument("balance: unknown account '" + id + "'");
+
+    return acc->second.balance;
 }
-
