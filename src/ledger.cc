@@ -17,6 +17,22 @@ void Ledger::addAccount(const std::string &id, Currency currency, bool canGoNega
 
 void Ledger::post(const Transaction &tr)
 {
+    //Moves money from one account to another after checking
+    //every rule first; if any check fails, no balance changes.
+    auto from = accounts_.find(tr.from());
+    auto to = accounts_.find(tr.to());
+
+    if (from == accounts_.end() || to == accounts_.end())
+        throw std::invalid_argument("post: unknown account");
     
+    if (from == to)
+        throw std::invalid_argument("post: from and to are the same");
+    
+    //CHECK
+}
+
+Money Ledger::balance(const std::string &id) const
+{
+
 }
 
