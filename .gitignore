@@ -1,0 +1,8 @@
+app
+run_tests
+run_tlv_tests
+run_crc_tests
+run_ledger_tests
+*.dSYM/
+*.o
+.DS_Store
