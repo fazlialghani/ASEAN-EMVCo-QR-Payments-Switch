@@ -13,9 +13,17 @@ run_tests: tests/test_money.cc src/money.cc src/currency.cc $(HEADERS)
 run_tlv_tests: tests/test_tlv.cc src/tlv.cc $(HEADERS)
 	$(CXX) $(CXXFLAGS) $(filter %.cc,$^) -o $@
 
-test: run_tests run_tlv_tests
+run_crc_tests: tests/test_crc.cc src/crc.cc $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(filter %.cc,$^) -o $@
+
+run_ledger_tests: tests/test_ledger.cc src/ledger.cc src/money.cc src/currency.cc $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(filter %.cc,$^) -o $@
+
+test: run_tests run_tlv_tests run_crc_tests run_ledger_tests
 	./run_tests
 	./run_tlv_tests
+	./run_crc_tests
+	./run_ledger_tests
 
 clean:
-	rm -f app run_tests run_tlv_tests
+	rm -rf app run_tests run_tlv_tests run_crc_tests run_ledger_tests *.dSYM
