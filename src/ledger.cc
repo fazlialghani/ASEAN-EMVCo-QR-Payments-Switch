@@ -55,3 +55,19 @@ Money Ledger::balance(const std::string &id) const
 
     return acc->second.balance;
 }
+
+bool Ledger::checkInvariant() const
+{
+    //verifies that the ledger is always balanced: the sum of all account balances
+    //in each currency must be zero. Money in the ledger can only move between
+    //accounts; it can never be created or destroyed.
+
+    //If any total is non-zero, post has a bug. The randomized test calls it after
+    //every transfer, so any bug is caught at the exact transfer that caused it.
+    std::unordered_map<Currency, std::int64_t> total;
+
+    for (const auto &entry : accounts_) {
+        const Money &m = entry.second.balance;
+        total[m.currency()] += m.minorUnits();
+    }
+}

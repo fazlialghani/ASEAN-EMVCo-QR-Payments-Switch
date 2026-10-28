@@ -6,6 +6,11 @@
 #include <vector>         // transaction history
 
 class Ledger {
+    // Ledger follows the rule of zero: it declares none of the Big 5.
+    // Its members (an unordered_map of accounts and a vector of transactions)
+    // are standard containers that already copy, move, and free their own
+    // memory correctly. Ledger owns no raw pointer, so the compiler-generated
+    // destructor, copy, and move operations do the right thing.
     public:
         void addAccount(const std::string &id, Currency currency, bool canGoNegative);
         void post(const Transaction &tr);
