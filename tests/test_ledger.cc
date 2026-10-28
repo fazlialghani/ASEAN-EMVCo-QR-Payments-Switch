@@ -129,5 +129,28 @@ int main() {
     }
     assert(rejected > 0);
 
+    // L11: the same transaction id posted twice is applied only once.
+    Ledger led3;
+    led3.addAccount("settle", Currency::THB, true);
+    led3.addAccount("alice", Currency::THB, false);
+
+    led3.post(Transaction{"d1", "settle", "alice", Money{Currency::THB, 500}});
+    led3.post(Transaction{"d1", "settle", "alice", Money{Currency::THB, 500}});
+
+    assert(led3.balance("alice").minorUnits() == 500);
+    assert(led3.balance("settle").minorUnits() == -500);
+    assert(led3.checkInvariant());
+
+    // L12: a failed transaction id is not recorded and can be retried.
+    threw = false;
+    try {
+        led3.post(Transaction{"d2", "alice", "settle", Money{Currency::THB, 900}});
+    } catch (const std::invalid_argument &) {
+        threw = true;
+    }
+    assert(threw);
+
+    led3.post(Transaction{"d2", "alice", "settle", Money{Currency::THB, 100}});
+    assert(led3.balance("alice").minorUnits() == 400);
     return 0;
 }

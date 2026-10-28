@@ -4,6 +4,7 @@
 #include <string>         // account ids
 #include <unordered_map>  // id -> Account
 #include <vector>         // transaction history
+#include <unordered_set>   // set of already-posted transaction ids
 
 class Ledger {
     // Ledger follows the rule of zero: it declares none of the Big 5.
@@ -23,4 +24,5 @@ class Ledger {
         };
         std::unordered_map<std::string, Account> accounts_;
         std::vector<Transaction> history_;
+        std::unordered_set<std::string> postedIds_;
 };

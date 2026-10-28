@@ -19,6 +19,10 @@ void Ledger::post(const Transaction &tr)
 {
     //Moves money from one account to another after checking
     //every rule first; if any check fails, no balance changes.
+
+    if (postedIds_.count(tr.id()) > 0) // Idempotency: a repeated transaction id is ignored, so a retried request never charges the payer twice.
+        return;
+
     if (tr.amount().minorUnits() <= 0)
         throw std::invalid_argument("post: amount. must be positive");
 
@@ -40,6 +44,7 @@ void Ledger::post(const Transaction &tr)
     
     //COMMIT
     history_.push_back(tr);
+    postedIds_.insert(tr.id()); // Record the id only after every check passed, so a failed transaction can still be retried.
     from->second.balance = newFrom;
     to->second.balance = newTo;
 }
