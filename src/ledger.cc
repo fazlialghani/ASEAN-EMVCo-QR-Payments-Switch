@@ -70,4 +70,10 @@ bool Ledger::checkInvariant() const
         const Money &m = entry.second.balance;
         total[m.currency()] += m.minorUnits();
     }
+
+    for (const auto &entry : total) {
+        if (entry.second != 0)
+            return false;
+    }
+    return true;
 }
