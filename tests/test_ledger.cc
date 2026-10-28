@@ -92,13 +92,42 @@ int main() {
 
     threw = false;
     try {
-        led.post(Transaction{"t6", "alice", "bob", Money{Currency::THB, 0}});
+        led.post(Transaction{"t7", "alice", "bob", Money{Currency::THB, 0}});
     } catch (const std::invalid_argument &) {
         threw = true;
     }
     assert(threw);
     assert(led.balance("alice").minorUnits() == 500);
     assert(led.balance("bob").minorUnits() == 0);
+
+    //L10 100,000 transfers for checkinvariant()
+    Ledger led2;
+    led2.addAccount("settle", Currency::THB, true);
+    led2.addAccount("a", Currency::THB, false);
+    led2.addAccount("b", Currency::THB, false);
+    led2.addAccount("c", Currency::THB, false);
+    const std::string ids[] = {"settle", "a", "b", "c"};
+
+    std::mt19937 rng{42}; //raw numbers
+    std::uniform_int_distribution<int> pick{0, 3}; //from 4 accounts in ids.
+    std::uniform_int_distribution<std::int64_t> units{1, 500}; //equally likely
+
+    int rejected = 0;
+    for (int i = 0; i < 100000; ++i) {
+        Transaction tr{
+            "r" + std::to_string(i),
+            ids[pick(rng)],
+            ids[pick(rng)],
+            Money{Currency::THB, units(rng)}
+        };
+        try {
+            led2.post(tr);
+        } catch (const std::invalid_argument &) {
+            ++rejected;
+        }
+        assert(led2.checkInvariant());
+    }
+    assert(rejected > 0);
 
     return 0;
 }
