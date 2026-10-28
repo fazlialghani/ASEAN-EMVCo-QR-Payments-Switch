@@ -8,27 +8,27 @@
 int main() {
     //S1.
     PromptPayScheme pp;
-    const PaymentScheme &s = pp;
-    assert(s.name() == "PromptPay");
-    assert(s.currency() == Currency::THB);
+    const PaymentScheme &s1 = pp;
+    assert(s1.name() == "PromptPay");
+    assert(s1.currency() == Currency::THB);
 
     QrisScheme q;
-    const PaymentScheme &s = q;
-    assert(s.name() == "Qris");
-    assert(s.currency() == Currency::IDR);
+    const PaymentScheme &s2 = q;
+    assert(s2.name() == "Qris");
+    assert(s2.currency() == Currency::IDR);
 
     PayNowScheme pn;
-    const PaymentScheme &s = pn;
-    assert(s.name() == "PromptPay");
-    assert(s.currency() == Currency::SGD);
+    const PaymentScheme &s3 = pn;
+    assert(s3.name() == "PayNow");
+    assert(s3.currency() == Currency::SGD);
 
     //S2.
     auto th = makeScheme("TH");
     assert(th->name() == "PromptPay");
     assert(th->currency() == Currency::THB);
 
-    auto id = makeScheme("iD");
-    assert(id->name() == "QrisPay");
+    auto id = makeScheme("ID");
+    assert(id->name() == "Qris");
     assert(id->currency() == Currency::IDR);
 
     auto sg = makeScheme("SG");
@@ -39,8 +39,9 @@ int main() {
     try {
         makeScheme("XX");
     } catch (const std::invalid_argument &) {
-        assert(threw);
+        threw = true;
     }
+    assert(threw);
 
     return 0;
 }
