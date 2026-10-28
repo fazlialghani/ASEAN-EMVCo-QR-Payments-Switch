@@ -22,11 +22,12 @@ run_ledger_tests: tests/test_ledger.cc src/ledger.cc src/money.cc src/currency.c
 run_scheme_tests: tests/test_scheme.cc src/scheme.cc $(HEADERS)
 	$(CXX) $(CXXFLAGS) $(filter %.cc,$^) -o $@
 
-test: run_tests run_tlv_tests run_crc_tests run_ledger_tests
+test: run_tests run_tlv_tests run_crc_tests run_ledger_tests run_scheme_tests
 	./run_tests
 	./run_tlv_tests
 	./run_crc_tests
 	./run_ledger_tests
+	./run_scheme_tests
 
 clean:
-	rm -rf app run_tests run_tlv_tests run_crc_tests run_ledger_tests *.dSYM
+	rm -rf app run_tests run_tlv_tests run_crc_tests run_ledger_tests run_scheme_tests *.dSYM
