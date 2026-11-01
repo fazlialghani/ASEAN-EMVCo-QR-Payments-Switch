@@ -56,6 +56,8 @@ int main() {
     assert(led.balance("somtam").minorUnits() == 15000);
     assert(led.balance("tourist").minorUnits() == 35000);
 
+    const std::string cases[] = {"1.234", "", "1,5", "abc",
+                             "12530376454020126340"};   // 20 digits: overflowed before
     return 0;
 }
 

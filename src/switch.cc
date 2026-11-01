@@ -21,7 +21,7 @@ std::int64_t parseAmount(const std::string &s)
     std::string whole = s.substr(0, dot);
     std::string frac = (dot == std::string::npos) ? "" : s.substr(dot + 1);
 
-    if (whole.empty() || frac.size() > 2)
+    if (whole.empty() || frac.size() > 2 || s.size() > 13)
         throw std::invalid_argument("parseAmount: invalid amount '" + s + "'");
     
     while (frac.size() < 2)
