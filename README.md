@@ -1,5 +1,6 @@
 # Cross-Border ASEAN EMVCo QR Payment Switch
 [![CI](https://github.com/fazlialghani/ASEAN-EMVCo-QR-Payments-Switch/actions/workflows/ci.yml/badge.svg)](https://github.com/fazlialghani/ASEAN-EMVCo-QR-Payments-Switch/actions/workflows/ci.yml)
+
 A C++20 payment switch that settles cross-border QR payments across ASEAN, from QRIS to PromptPay to PayNow. Every payment is applied exactly once, every balance reconciles, and a corrupted QR never reaches the ledger.
 
 > **Simulation.** This project follows the EMVCo Merchant-Presented QR format but is not certified and is not connected to any real payment network.
