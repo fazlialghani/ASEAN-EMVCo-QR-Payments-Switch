@@ -38,3 +38,8 @@ clean:
 
 make_payload: tools/make_payload.cc src/crc.cc $(HEADERS)
 	$(CXX) $(CXXFLAGS) $(filter %.cc,$^) -o $@
+
+FUZZCXX ?= clang++
+
+fuzz_parser: fuzz/fuzz_parser.cc src/crc.cc src/tlv.cc src/switch.cc src/scheme.cc src/ledger.cc src/money.cc src/currency.cc $(HEADERS)
+	$(FUZZCXX) -std=c++20 -g -O1 -Iinclude -fsanitize=fuzzer,address,undefined -fno-sanitize-recover=all $(filter %.cc,$^) -o $@
