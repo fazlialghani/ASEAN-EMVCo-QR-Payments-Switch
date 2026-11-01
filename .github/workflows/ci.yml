@@ -1,3 +1,8 @@
+# Continuous Integration: on every push, GitHub builds the project on Linux
+# and runs all tests twice, once with g++ and once with clang++ plus
+# AddressSanitizer and UndefinedBehaviorSanitizer, so broken code or memory
+# bugs are caught before they reach main.
+
 name: CI
 
 on:
