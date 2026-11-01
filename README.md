@@ -121,6 +121,22 @@ processPayment(led, "pay-1", bangkokPayload, "tourist", "somtam");
 
 ---
 
+## Fuzzing
+
+The TLV parser, CRC check and amount parser are fuzzed with libFuzzer under
+AddressSanitizer and UndefinedBehaviorSanitizer, seeded from `corpus/`
+(12 valid payloads across PromptPay, QRIS and PayNow).
+
+- **90M+ generated inputs** in a 30-minute run with no crashes.
+- The fuzzer found a **signed integer overflow** in `parseAmount` within two
+  seconds: a 20-digit amount overflowed `int64_t`. Amounts are now limited to
+  the 13 characters EMVCo allows, and the crashing input is kept as a
+  regression test.
+
+Run it yourself from the **Actions → Fuzz → Run workflow** button.
+
+---
+
 ## Project structure
 
 ```
