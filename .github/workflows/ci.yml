@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: make test (g++)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Show compiler version
+        run: g++ --version
+      - name: Build and run all tests
+        run: make test
+
+  sanitizers:
+    name: make test (clang++ with ASan and UBSan)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Show compiler version
+        run: clang++ --version
+      - name: Build and run all tests with sanitizers
+        run: >
+          make test CXX=clang++
+          CXXFLAGS="-std=c++20 -Wall -Wextra -pedantic -g -Iinclude
+          -fsanitize=address,undefined -fno-sanitize-recover=all
+          -fno-omit-frame-pointer"
