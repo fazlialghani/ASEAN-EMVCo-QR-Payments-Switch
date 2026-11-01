@@ -35,3 +35,6 @@ test: run_tests run_tlv_tests run_crc_tests run_ledger_tests run_scheme_tests ru
 
 clean:
 	rm -rf app run_tests run_tlv_tests run_crc_tests run_ledger_tests run_scheme_tests run_switch_tests *.dSYM
+
+make_payload: tools/make_payload.cc src/crc.cc $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(filter %.cc,$^) -o $@
