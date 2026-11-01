@@ -1,0 +1,31 @@
+# Runs the libFuzzer target against the seed corpus with ASan and UBSan.
+# Started manually from the Actions tab; the run length is configurable.
+name: Fuzz
+
+on:
+  workflow_dispatch:
+    inputs:
+      seconds:
+        description: "How long to fuzz, in seconds"
+        default: "1800"
+
+jobs:
+  fuzz:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install clang and the libFuzzer runtime
+        run: sudo apt-get update && sudo apt-get install -y clang-18 libclang-rt-18-dev
+      - name: Build fuzz target
+        run: make fuzz_parser FUZZCXX=clang++-18
+      - name: Run fuzzer
+        run: |
+          mkdir -p fuzz_work
+          ./fuzz_parser fuzz_work corpus -max_total_time=${{ github.event.inputs.seconds }} -print_final_stats=1
+      - name: Upload crash inputs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-crashes
+          path: crash-*
