@@ -14,7 +14,8 @@ int main() {
     assert(parseAmount("0.5") == 50);
 
     //S2: invalid -> throw
-    const std::string cases[] = {"1.234", "", "1,5", "abc"};
+const std::string cases[] = {"1.234", "", "1,5", "abc",
+                             "12530376454020126340"};   // 20 digits: overflowed before
     int bad = 0;
     for (std::size_t i = 0; i < 4; i++) {
         try {
